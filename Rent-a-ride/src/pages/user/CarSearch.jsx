@@ -18,18 +18,17 @@ import { useNavigate } from "react-router";
 const CarSearch = () => {
 
     const { 
-        handleSubmit, 
-        control, 
-        reset, 
-        formState : {errors}, 
-       } = useForm({
-        // resolver: zodResolver(schema),
-        defaultValues: {
-        pickup_district: "",
-        pickup_location: "",
-        dropoff_location: "",
-        pickuptime: null,
-        dropofftime: null,
+            handleSubmit, 
+            control, 
+            reset, 
+           formState : {errors},  } = useForm({
+                // resolver: zodResolver(schema),
+                defaultValues: {
+                pickup_district: "",
+                pickup_location: "",
+                dropoff_location: "",
+                pickuptime: null,
+                dropofftime: null,
        },
     });
 
@@ -39,6 +38,9 @@ const CarSearch = () => {
     // const uniqueDistrict = districtData?.filter(( cur, idx ) => {
     //     return cur !== districtData[idx + 1]
     // })
+    
+    const [pickup, setPickup] = useState(null);
+    const [error, setError] = useState(null);
 
     return (
         <>
@@ -84,9 +86,9 @@ const CarSearch = () => {
                                                     <MenuItem value="">
                                                         <span className="animate-pulse">Loading</span>
                                                     </MenuItem>
-                                                    )}
+                                                    )} */}
                                                     {!isLoading && <MenuItem value="">Select a Place</MenuItem>}
-                                                    {uniqueDistrict?.map( (cur, idx) => (
+                                                    {/* {uniqueDistrict?.map( (cur, idx) => (
                                                         <MenuItem value={cur} key={idx}>
                                                           {cur}
                                                         </MenuItem>
@@ -97,6 +99,95 @@ const CarSearch = () => {
                                          {errors.pickup_district && <p className="text-red-500">{errors.pickup_district.message}</p>}
                                     </div>
 
+                                    <div className="box-form__car-type ">
+                                        <label htmlFor="pickup_location">
+                                            <IconMapPinFilled className="input-icon" /> &nbsp; Pick-up Location <p className="text-red-500">*</p>
+                                        </label>
+                                        <Controller
+                                            name="pickup_location"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <TextField
+                                                {...field}
+                                                id="pickup_location"
+                                                select
+                                                // required
+                                                className="md:mb-10 capitalize"
+                                                placeholder={"pick up location"}
+                                                >
+                                                    
+                                                </TextField>
+                                            )}
+                                        />
+                                    </div>
+
+                                    <div className="box-form__car-type">
+                                        <label>
+                                             <IconMapPinFilled className="input-icon" /> &nbsp; Drop-of Location <p className="text-red-500">*</p>
+                                        </label>
+                                        <Controller
+                                            name="pickup_location"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <TextField
+                                                    {...field}
+                                                    id="pickup_location"
+                                                    select
+                                                    className="md:mb-10 capitalize"
+                                                    placeholder={"pick up location"}
+                                                >
+
+                                                </TextField>
+                                            )}
+                                        />
+                                        {errors.pickup_location && <p className="text-red-500">{errors.pickup_location.message}</p>}
+
+                                    </div>
+
+                                    <div className="box-form__car-time">
+                                        <label htmlFor="picktime" className="flex items-center">
+                                             <IconCalendarEvent className="input-icon" /> &nbsp; Pick-up Date <p className="text-red-500">*</p>
+                                        </label>
+                                        <Controller
+                                            name={"pickuptime"}
+                                            control={control}
+                                            render={({ field }) => (
+                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                    <DemoContainer components={["DateTimePicker"]}>
+                                                        <DateTimePicker 
+                                                            label="pickup time"
+                                                        />
+                                                    </DemoContainer>
+                                                </LocalizationProvider>
+                                            )}
+                                        />
+                                    </div>
+
+                                    <div className="box-form__car-time">
+                                        <label htmlFor="droptime" className="flex items-center">
+                                             <IconCalendarEvent className="input-icon" /> &nbsp; Drop-of Date <p className="text-red-500">*</p>
+                                        </label>
+                                        <Controller 
+                                          name={"dropoftime"}
+                                          control={control}
+                                          render={({ field }) => (
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DemoContainer components={["DateTimePicker"]}> 
+                                                    <DateTimePicker 
+                                                       label="Dropoff time" 
+                                                       {...field}
+                                                    />
+                                                </DemoContainer>
+                                            </LocalizationProvider>
+                                          )}
+                                        />
+                                         {errors.dropofftime && <p className="text-red-500">{errors.dropofftime.message}</p>}
+                                         {error && <p className="text-[8px] text-red-500">{error}</p>}
+                                    </div>
+
+                                    <button type="submit" className="book-content__box_button">
+                                        Search
+                                    </button>
                                     
                                 </div>
                             </form>
