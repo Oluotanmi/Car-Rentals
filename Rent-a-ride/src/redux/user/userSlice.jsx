@@ -18,7 +18,26 @@ const userSlice = createSlice({
       signInStart: (state) => {
         state.isLoading = true;
       },
+      setIsSweetAlert: (state, action) => {
+        state.isSweetAlert = action.payload;
+      },
+      signInSuccess: (state, action) => {
+        state.currentUser = action.payload;
+        state.isError = false;
+        state.isLoading = false;
+      },
+      editUserProfile: (state, action) => {
+        const { username, email, phoneNumber, adress } = action.payload;
+        state.currentUser.username = username;
+        state.currentUser.email = email;
+        state.currentUser.phoneNumber = phoneNumber;
+        state.currentUser.adress = adress;
+      },
      }
-    })
+    });
 
+ export const {
+  setIsSweetAlert
+ } = userSlice.actions
+ 
 export default userSlice.reducer;

@@ -6,7 +6,7 @@ import {
     FooterLinkGroup,
     FooterTitle,
   } from "flowbite-react";
-  // import {  BsGithub, BsInstagram, BsLinkedin, BsTwitter } from "react-icons/bs";
+  import {  BsGithub, BsInstagram, BsLinkedin, BsTwitter } from "react-icons/bs";
 
 
 
@@ -46,12 +46,12 @@ export const Footers = () => {
             </div>
             <hr className="pt-10 lg:m-10 lg:px-10" />
           <div className="w-full sm:flex sm:items-center sm:justify-between lg:px-10 ">
-            <FooterCopyright href="#" by="Rent a Ride" year={2024} />
+            <FooterCopyright href="#" by="Rent a Ride" year={2026} />
             <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
-              {/* <FooterIcon href="https://www.linkedin.com/in/" icon={BsLinkedin} />
+              <FooterIcon href="https://www.linkedin.com/in/" icon={BsLinkedin} />
               <FooterIcon href="https://github.com/oluotanmi" icon={BsGithub} />
               <FooterIcon href="#" icon={BsInstagram} />
-              <FooterIcon href="#" icon={BsTwitter} /> */}
+              <FooterIcon href="#" icon={BsTwitter} />
                          
             </div>
           </div>

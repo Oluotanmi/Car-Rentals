@@ -7,11 +7,12 @@ import { useNavigate } from "react-router";
 import {  useDispatch, useSelector } from "react-redux";
 import { HeroParallax } from "../../components/ui/Paralax";
 import CarSearch from "./CarSearch";
+import { setIsSweetAlert }  from "../../redux/user/userSlice"
 
 function Home() {
    const navigate = useNavigate()
    const dispatch = useDispatch()
-   const isSweetAlert = true;
+   const { isSweetAlert } = useSelector((state) => state.user)
 
     const ref = useRef(null);
 
@@ -34,13 +35,13 @@ function Home() {
          else if (result.isDenied) {
           navigate('.profile/orders')
         }
-        dispatch()
       })
+      dispatch(setIsSweetAlert(false))
    };
 
     return (      
      <> 
-      {false && sweetalert()}
+      {isSweetAlert && sweetalert()}
       
             <div className="relative h-[100vh] w-full mx-auto sm:max-w-[900px] lg:max-w-[1500px] bg-white min-h-[72vh] md:min-h-[60vh] lg:min-h-[73vh]">
 
@@ -88,7 +89,6 @@ function Home() {
             <div ref={ref}>
                <CarSearch />
             </div>
-
 
             <HeroParallax />
             <Footers />

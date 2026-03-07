@@ -38,14 +38,38 @@ export const products = [
     
   ];
 
-//   const ref = useRef(null)
-  
-//   const { scrollYProgress } = useScroll({
-//     target: ref,
-//     offset: ["start start", "end start"]
-//   })
-
+ 
   export const HeroParallax = () => {
+
+    const firstRow = products.slice(0, 1);
+
+    const ref = useRef(null);
+  
+    const { scrollYProgress } = useScroll({
+      target: ref,
+      offset: ["start start", "end start"]
+    })
+  
+
+    const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
+
+    const isMobile = useMediaQuery({ maxWidth: 500 });
+    const isTablet = useMediaQuery({ minWidth: 510, maxWidth: 900 });
+    const isDesktop = useMediaQuery({ minWidth: 901, maxWidth:1400 });
+
+    const translateXReverseMobile = useTransform(scrollYProgress, [0, .3], [1000, 70])
+    const translateXTablet = useTransform(scrollYProgress, [0, .4], [1000, 300]);
+    const translateXReverseDesktop = useTransform(scrollYProgress, [0, .4], [1000,90])
+
+    const translateX = useSpring(
+      isMobile
+      ? translateXReverseMobile
+      : isTablet
+      ? translateXTablet
+      : translateXReverseDesktop,
+      springConfig
+    )
+
     return (
         <>
          <div
@@ -53,7 +77,7 @@ export const products = [
             className="h-full py-40 overflow-hidden mb-[200px]  antialiased relative flex flex-col self-auto [perspective:1000px]  [transform-style:preserve-3d] "          
          >
            <Header />
-           {/* <motion.div
+           <motion.div
                 style={{
                     // rotateX,
                     // rotateZ,
@@ -66,11 +90,25 @@ export const products = [
             >
                <motion.div
                    className="flex flex-row-reverse   mb-[200px] "
-               >
-            
+               >         
+                    {firstRow.map((product,index) => (
+                      <div key={index} className="flex flex-col items-center lg:flex-row bg-gradient-to-br from-slate-900 to-green-500 max-w-full md:max-w-[800px] lg:max-w-[1300px] md:min-h-800px lg:min-h-[800px] gap-5 rounded-lg py-[50px] px-[50px] md:py-[100px] md:px-[100px] mx-auto  ">
+                        <div>
+                          <h1 className="max-w-[250px] md:max-w-[600px] lg:max-w-[700px] lg:min-w-[500px] text-lg md:text-[24px]   p-1 md:p-4 text-justify lg:text-left  from-black  via-gray-700 to-white  bg-gradient-to-t bg-clip-text text-transparent  capitalize font-bold parallax1H1 my-[40px] leading-[2rem] md:leading-[3rem] ">
+                          Find the perfect ride at unbeatable prices. Whether it's a weekend getaway or a long-term rental, we’ve got you covered with flexible plans and zero hidden fees. Book now and hit the road in style!
+                          </h1>
+                        </div>
 
+                        <div className="mt-10 lg:mt-[-10px] ">
+                          <ProductCard
+                            product={product}
+                            translate={translateX}
+                          />
+                        </div>
+                      </div>
+                    ))}
                </motion.div>
-            </motion.div> */}
+            </motion.div> 
          </div>
         </>
     )
@@ -92,3 +130,38 @@ export const products = [
       </div>
     );
   };
+
+  export const ProductCard = ({ product, translate }: { product: {
+    title: string;
+    link: string;
+    thumbnail: string;
+  };
+    translate: MotionValue<number>;
+  }) => {
+    return (
+      <motion.div
+      style={{
+        x: translate,
+      }}
+      whileHover={{
+        y: -20,
+      }}
+      key={product.title}
+      className="group/product h-48 w-[50vh] md:h-96 md:w-[100vh] relative flex-shrink-0"
+      >      
+        <div className="md:m-10">
+            <img
+              src={product.thumbnail}
+            
+              className="object-contain object-left-top absolute h-full w-full inset-0 max-w-[600px] max-h-[600px]"
+              alt={product.title}
+            />
+          </div>
+
+          <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 pointer-events-none"></div>
+          <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white">
+            {product.title}
+          </h2>
+      </motion.div>
+    )
+  }

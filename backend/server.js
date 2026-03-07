@@ -12,15 +12,15 @@ App.use(express.json())
 App.use(cookieParser())
 
 dotenv.config();
-const port = 3000;
+const port = 4000;
 
-// mongoose
-//     .connect();
-//     .then(console.log("connected"))
-//     .catch((error) => console.error(error))
+mongoose
+    .connect("mongodb://localhost:27017/Rent-a-Ride")
+    .then(console.log("mongoDB is connected"))
+    .catch((error) => console.error(error))
   
  App.listen( port, () => {
-  console.log("server listening !");
+  console.log("server is listening on port  " + port);
     
 });
 
@@ -41,7 +41,7 @@ App.use("/api/auth", authRoute);
 
 App.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
-  const message = err.message || "internal server errror"
+  const message = err.message || "internal server error"
   return res.status(statusCode).json({
     success: false,
     message,

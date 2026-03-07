@@ -6,7 +6,9 @@ import Jwt from "jsonwebtoken";
 
 export const signUp = async (req, res, next) => {
     const {username, email, password} = req.body;
-
+    // const username = "bukunmi";
+    // const email = "bukunmi@yahoo.com";
+    // const password = "tyu123"
     try {
         const hashedPassword = bcryptjs.hashSync(password, 10);
         const newUser = new User({
@@ -30,4 +32,56 @@ export const refreshToken = async (req, res, next) => {
     };
 
     const refreshToken = req.headers.authorization.split(" ")[1].split(",")[0];
+};
+
+export const signIn = async (req, res, next) => {
+    const { email, password } = req.body;
+    try {
+       const validUser = await User.findOne({ email });
+       if(!validUser) return next(errorHandler(404, "user not found"));
+       
+       const validPassword = bcryptjs.compareSync(password, validUser.password);
+       if(!validPassword) return next(errorHandler(401, "wrong credentials"));
+
+       let refreshToken = "";
+       let accessToken = "";
+
+       const data = await res.json();
+       const ACCESSTOKEN = data.accessToken
+
+       accessToken = Jwt.sign({ id:validUser._id }, ACCESSTOKEN, {
+         expiresIn: "10m"
+       } );
+       refreshToken = Jwt.sign({ id: validUser._id }, ACCESSTOKEN, {
+         expiresIn: "7d"
+       });
+
+       const updateData = await User.findByIdAndUpdate(
+        { _id: validUser._id },
+        { refreshToken },
+        { new: true }
+       );
+
+       const { password: hashedPassword, isAdmin, ...rest } = updateData._doc;
+
+          //not sending users hashed password to frontend
+        const responsePayload = {
+            refreshToken: refreshToken,
+            accessToken,
+            isAdmin,
+            ...rest,
+        };
+    
+        req.user = {
+            ...rest,
+            isAdmin: validUser.isAdmin,
+            isUser: validUser.isUser,
+        };
+
+        res.status(200).json(responsePayload)
+
+    } catch(error) {
+        next(error);
+        console.log(error)
+    }
 }
