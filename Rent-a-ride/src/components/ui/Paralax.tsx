@@ -42,6 +42,8 @@ export const products = [
   export const HeroParallax = () => {
 
     const firstRow = products.slice(0, 1);
+    const secondRow = products.slice(1, 2);
+
 
     const ref = useRef(null);
   
@@ -68,21 +70,48 @@ export const products = [
       ? translateXTablet
       : translateXReverseDesktop,
       springConfig
-    )
+    );
+
+    const translateXReverse = useSpring(
+      useTransform(scrollYProgress, [0.7, 1], [250, -1000]),
+      springConfig
+    );
+
+    const rotateX = useSpring(
+      useTransform(scrollYProgress, [0, 0.150], [15, 0]),
+      springConfig
+    );
+    const opacity = useSpring(
+      useTransform(scrollYProgress, [0, 0.2], [0, 1]),
+      springConfig
+    );
+    const rotateZ = useSpring(
+      useTransform(scrollYProgress, [0, 0.350], [20, 0]),
+      springConfig
+    );
+    const rotateZM = useSpring(
+      useTransform(scrollYProgress, [0.7, 1], [0, -20]),
+      springConfig
+    );
+    const translateY = useSpring(
+      useTransform(scrollYProgress, [0, 0.2], [-800, 600]),
+      springConfig
+    );
+  
 
     return (
         <>
          <div
-            // ref={ref}
+            ref={ref}
             className="h-full py-40 overflow-hidden mb-[200px]  antialiased relative flex flex-col self-auto [perspective:1000px]  [transform-style:preserve-3d] "          
          >
            <Header />
            <motion.div
                 style={{
-                    // rotateX,
-                    // rotateZ,
-                    // translateY,
-                    // opacity,
+                    rotateX,
+                    rotateZ,
+                    translateY,
+                    opacity,
                     scrollBehavior:'smooth',
                     transition:'ease-in-out'
                 }}
@@ -108,6 +137,30 @@ export const products = [
                       </div>
                     ))}
                </motion.div>
+               <motion.div className="flex h-[600px] flex-row-reverse space-x-reverse space-x-20">
+                <motion.div className="flex flex-row-reverse  mb-[200px]  "  style={{ rotateZ: rotateZM  }}>
+                {secondRow.map((product,index) => (
+                    
+                    <div key={index}  className="flex flex-row justify-center items-center p-[100px] bg-gradient-to-br from-green-400 to-slate-900 max-w-[1300px] rounded-lg py-[100px] px-[100px] mx-auto ">
+                      <div>
+                        <ProductCard
+                          product={product}
+                          translate={translateXReverse}
+                          
+                        />
+                      </div>
+                      <div className="pr-10">
+                        <h1 className="w-[400px] text-4xl    p-4 mr-[200px] text-start  from-white via-gray-50 to-black-700 bg-gradient-to-bl bg-clip-text text-transparent font-bold capitalize  ">
+                          Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                          Adipisci odit accusantium saepe iure eligendi, nihil
+                          perferendis reprehenderit dolore distinctio quaerat
+                        </h1>
+                      </div>
+                    </div>
+            
+                  ))}
+                </motion.div> 
+               </motion.div>
             </motion.div> 
          </div>
         </>
@@ -131,11 +184,15 @@ export const products = [
     );
   };
 
-  export const ProductCard = ({ product, translate }: { product: {
-    title: string;
-    link: string;
-    thumbnail: string;
-  };
+  export const ProductCard = ({ 
+    product, 
+    translate 
+  }: {
+     product: {
+        title: string;
+        link: string;
+        thumbnail: string;
+      };
     translate: MotionValue<number>;
   }) => {
     return (

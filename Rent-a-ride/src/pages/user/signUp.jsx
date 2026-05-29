@@ -164,8 +164,8 @@
 
 
 import React, { useState } from "react";
-import { Link } from "react-router";
-import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -306,12 +306,12 @@ function SignUp() {
                     <circle cx="17" cy="15" r="2" fill="#032e24"/>
                   </svg>
                 </div>
-                <span className="brand-name">Bilal Garage</span>
+                <span className="brand-name"> Garage</span>
               </div>
 
               <div className="left-tagline">
                 Your Next<br/>
-                <span className="accent-text">Dream Car</span><br/>
+                <span className=" text-green-600">Dream Car</span><br/>
                 Starts Here
               </div>
               <p className="left-desc">

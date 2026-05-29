@@ -1,8 +1,9 @@
 import User from "../models/userModel.js";
 import bcryptjs from "bcryptjs";
 import Jwt from "jsonwebtoken";
+import { errorHandler } from "../utils/error.js";
 
-
+const expireDate = new Date (Date.now() + 3600000)
 
 export const signUp = async (req, res, next) => {
     const {username, email, password} = req.body;
@@ -35,24 +36,25 @@ export const refreshToken = async (req, res, next) => {
 };
 
 export const signIn = async (req, res, next) => {
+
     const { email, password } = req.body;
+
+
     try {
        const validUser = await User.findOne({ email });
        if(!validUser) return next(errorHandler(404, "user not found"));
-       
+
        const validPassword = bcryptjs.compareSync(password, validUser.password);
        if(!validPassword) return next(errorHandler(401, "wrong credentials"));
 
        let refreshToken = "";
        let accessToken = "";
 
-       const data = await res.json();
-       const ACCESSTOKEN = data.accessToken
-
-       accessToken = Jwt.sign({ id:validUser._id }, ACCESSTOKEN, {
+       
+       accessToken = Jwt.sign({ id:validUser._id }, process.env.JWT_ACCESS_SECRET, {
          expiresIn: "10m"
        } );
-       refreshToken = Jwt.sign({ id: validUser._id }, ACCESSTOKEN, {
+       refreshToken = Jwt.sign({ id: validUser._id },process.env.JWT_REFRESH_SECRET, {
          expiresIn: "7d"
        });
 

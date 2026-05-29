@@ -84,12 +84,13 @@
 // export default SignIn;
 
 import React, { useState } from "react";
-import { Link } from "react-router";
-import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { signInSuccess } from "../../redux/user/userSlice";
 
 const schema = z.object({
   email: z
@@ -114,6 +115,10 @@ function SignIn() {
   const [Loading, setLoading] = useState(isLoading);
   const [focusedField, setFocusedField] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const user = useSelector( state => state.user.currentUser)
+  console.log(user)
 
   const onSubmit = async (formData, e) => {
     const BASE_URL = "http://localhost:4000"
@@ -128,14 +133,19 @@ function SignIn() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+      // console.log(data);
       
       setLoading(false);
-      if (data.success === false) {
-        setError(true);
-        return;
-      }
+        if (data.isUser === false) {
+          //  console.log(data)
+          setError(true);
+          return;
+        }
       setError(false);
+
       navigate("/");
+      dispatch(signInSuccess(data))
+
     } catch (error) {
       setLoading(false);
       setError(true);
@@ -250,9 +260,9 @@ function SignIn() {
         <div className="si-card">
 
           <div className="si-form-panel">
-            <p className="si-eyebrow">Welcome back</p>
+            <p className="text-green-600">Welcome back</p>
             <h1 className="si-title">Sign In</h1>
-            <p className="si-subtitle">
+            <p className="text-sm text-green-600">
               Good to see you again. Jump back into your garage.
             </p>
 
@@ -285,16 +295,16 @@ function SignIn() {
               )}
 
               <div className="si-btn-row">
-                <button type="submit" className="si-btn-main" disabled={Loading}>
-                  {Loading ? <><span className="si-spinner" />Signing in...</> : "Sign In"}
+                <button type="submit" className="si-btn-main text-green-600" disabled={Loading}>
+                  {Loading ? <><span className="si-spinner text-green-600" />Signing in...</> : "Sign In"}
                 </button>
-                <button type="button" className="si-btn-oauth">OAuth</button>
+                <button type="button" className="si-btn-oauth text-green-600">OAuth</button>
               </div>
             </form>
 
             <div className="si-divider">
               <span className="si-div-line" />
-              <span className="si-div-text">new here?</span>
+              <span className="si-div-text text-green-600">new here?</span>
               <span className="si-div-line" />
             </div>
 
@@ -317,16 +327,16 @@ function SignIn() {
                     <circle cx="17" cy="15" r="2" fill="#032e24"/>
                   </svg>
                 </div>
-                <span className="si-brand-name">Bilal Garage</span>
+                <span className="si-brand-name text-green-600"> Garage</span>
               </div>
 
               <div className="si-tagline">
                 Every Drive<br/>
-                <span className="si-accent">Tells A</span><br/>
+                <span className=" text-green-600">Tells A</span><br/>
                 Story
               </div>
               <p className="si-img-desc">
-                Your vehicles, your history, your next move — all in one place.
+                Your vehicles, your history, your next move all in one place.
               </p>
 
               <div className="si-trust-row">

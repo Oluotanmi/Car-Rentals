@@ -3,11 +3,19 @@ import { configureStore,combineReducers } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./user/userSlice.jsx";
-import { ModelDataSlice } from "./adminSlices/adminDashboardSlice/CarModelDataSlice.jsx";
+import selectRideSlice from "./user/selectRideSlice.jsx";
+import ModelDataSlice  from "./adminSlices/adminDashboardSlice/CarModelDataSlice.jsx";
+import BookingDataSlice from "./user/BookingDataSlice.jsx";
+import userListVehiclesReducer from "./user/listAllVehicleSlice.jsx"
+import sortfilterSlice from "./user/sortfilterSlice.jsx"
 
 const rootReducer = combineReducers({
   user : userReducer,
-  modelDataSlice : ModelDataSlice
+  selectRideSlice: selectRideSlice,
+  userListVehicles: userListVehiclesReducer,
+  modelDataSlice : ModelDataSlice,
+  sortfilterSlice:sortfilterSlice,
+  bookingDataSlice: BookingDataSlice,
 });
 
 const persistConfig = {

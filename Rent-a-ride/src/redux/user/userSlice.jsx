@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  // signInRes:null,
   currentUser: null,
   isUpdated: false,
   isLoading: false,
@@ -11,18 +12,22 @@ const initialState = {
   singleOrderDetails:null
 };
 
+// console.log(currentUser);
+
 const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
       signInStart: (state) => {
         state.isLoading = true;
+        
       },
       setIsSweetAlert: (state, action) => {
         state.isSweetAlert = action.payload;
       },
       signInSuccess: (state, action) => {
         state.currentUser = action.payload;
+        // console.log(action.payload)
         state.isError = false;
         state.isLoading = false;
       },
@@ -37,7 +42,7 @@ const userSlice = createSlice({
     });
 
  export const {
-  setIsSweetAlert
+  setIsSweetAlert,signInSuccess,editUserProfile
  } = userSlice.actions
  
 export default userSlice.reducer;
