@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       // tailwindcss()
+      //tailwindcss()
     ],
     optimizeDeps: {
       include: ["sweetalert2"],
