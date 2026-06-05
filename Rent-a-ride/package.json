@@ -14,7 +14,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.3.0",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@firebase/auth": "^1.12.0",
@@ -26,7 +26,6 @@
     "@nivo/core": "^0.85.1",
     "@nivo/geo": "^0.85.1",
     "@nivo/pie": "^0.85.1",
-    "@reduxjs/toolkit": "^2.11.2",
     "@syncfusion/ej2": "^19.4.56",
     "@syncfusion/ej2-react-calendars": "^19.4.56",
     "@syncfusion/ej2-react-charts": "^19.4.54",
