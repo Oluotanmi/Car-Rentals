@@ -8,6 +8,7 @@ import {  useDispatch, useSelector } from "react-redux";
 import { HeroParallax } from "../../components/ui/Paralax";
 import CarSearch from "./CarSearch";
 import { setIsSweetAlert }  from "../../redux/user/userSlice"
+import { PersistGate } from "redux-persist/integration/react"
 
 function Home() {
    const navigate = useNavigate()

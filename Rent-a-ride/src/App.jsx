@@ -11,6 +11,7 @@ import AvailableVehicles from './pages/user/AvailableVehiclesAfterSearch'
 import VehicleDetails from './pages/user/VehicleDetails'
 import Enterprise from './pages/user/Enterprise'
 import Contact from './pages/user/contact'
+import { PersistGate } from "redux-persist/integration/react"
 
 function App() {
 
