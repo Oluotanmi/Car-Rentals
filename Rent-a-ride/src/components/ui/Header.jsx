@@ -6,9 +6,10 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { pathname } = useLocation();
 
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state?.user);
 
-  const user = currentUser.isUser
+  // const user = currentUser?.isUser
+  const user = false;
   console.log(user)
 
 
